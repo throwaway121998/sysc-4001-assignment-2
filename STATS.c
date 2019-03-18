@@ -41,6 +41,13 @@ int main(int argc, const char * argv[]) {
         exit(EXIT_FAILURE);
     }
     printf("The shared mem is attached @ location: 0x%X\n", (int)shared_memory);
+    int is_debug;
+    printf("Would you like to run in debug mode? <0, 1>: ");
+    scanf("%d", &is_debug);
+    if (is_debug != 0 && is_debug != 1) {
+        fprintf(stderr, "invalid mode\n");
+        exit(EXIT_FAILURE);
+    }
     shared_data = (struct shared_data *)shared_memory;
     for(int i = 0; i < SZ; i++) {
         /* Instantiate the array from user input. */
@@ -53,9 +60,8 @@ int main(int argc, const char * argv[]) {
             exit(EXIT_FAILURE);
         }
     }
-    shared_data->is_alive = 1;
     /* Fork SZ processes. */
-    int n_processes = SZ;
+    int n_processes = SZ - 1;
     for(int i = 0; i < n_processes; i++) {
         pid_t pid = fork();
         switch(pid) {
@@ -64,19 +70,8 @@ int main(int argc, const char * argv[]) {
                 exit(EXIT_FAILURE);
             case 0:
                 /* Child process. */
-                while(shared_data->is_alive) {
-                    if (i == SZ - 1) {
-                        int is_ok = 1;
-                        for(int j = 0; j < SZ; j++) {
-                            if (shared_data->B[i] < shared_data->B[i + 1]) {
-                                is_ok = 0;
-                                break;
-                            }
-                        }
-                        if (is_ok) {
-                            shared_data->is_alive = 0;
-                        }
-                    } else if (i % 2 == 0) { /* Asymmetric solution. */
+                for(int i = 0; i < SZ; i++) {
+                    if (i % 2 == 0) { /* Asymmetric solution. */
                         /* Enter the critical section. */
                         if (!semaphore_p(shared_data->mutex[i])) {
                             exit(EXIT_FAILURE);
@@ -89,6 +84,13 @@ int main(int argc, const char * argv[]) {
                             int temp = shared_data->B[i];
                             shared_data->B[i] = shared_data->B[i + 1];
                             shared_data->B[i + 1] = temp;
+                            if (is_debug) {
+                                printf("Process #%d: performed swapping\n", i);
+                            }
+                        } else {
+                            if (is_debug) {
+                                printf("Process #%d: no swapping\n", i);
+                            }
                         }
                         /* Exit the critical section. */
                         if (!semaphore_v(shared_data->mutex[i])) {
@@ -110,6 +112,13 @@ int main(int argc, const char * argv[]) {
                             int temp = shared_data->B[i];
                             shared_data->B[i] = shared_data->B[i + 1];
                             shared_data->B[i + 1] = temp;
+                            if (is_debug) {
+                                printf("Process #%d: performed swapping\n", i);
+                            }
+                        } else {
+                            if (is_debug) {
+                                printf("Process #%d: no swapping\n", i);
+                            }
                         }
                         /* Exit the critical section. */
                         if (!semaphore_v(shared_data->mutex[i + 1])) {
@@ -154,7 +163,7 @@ int main(int argc, const char * argv[]) {
         fprintf(stderr, "shmctl(IPC_RMID) failed\n");
         exit(EXIT_FAILURE);
     }
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 static int set_semvalue(int sem_id) {
