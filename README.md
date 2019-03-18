@@ -48,7 +48,6 @@ Instantiate the shared memory.
 Make the shared memory accessible to the program.
 Instantiate the array, B, of size SZ from user input.
 Instantiate SZ semaphores.
-Set is_alive to true.
 Fork SZ processes.
 If a parent process then break.
 If a child process then: 
