@@ -80,6 +80,6 @@ Detach and delete the shared memory.
 
 ## Contributors
 
-Kyle Horne         101038042
-Dmytro Sytnik      101020533
-Joel Roy-Couvillon 100967575
+* Kyle Horne         101038042
+* Dmytro Sytnik      101020533
+* Joel Roy-Couvillon 100967575
