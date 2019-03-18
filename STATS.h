@@ -14,9 +14,8 @@
 
 /* The shared data structure amongst the processes. */
 struct shared_data {
-    int mutex[SZ];
-    int     B[SZ];
-    int  is_alive;
+    int mutex[SZ * 2];
+    int         B[SZ];
 };
 
 #include <sys/types.h>
