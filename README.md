@@ -10,6 +10,7 @@ Run the Makefile.
 Sample output from the mandatory test cases:
 ```
 The shared mem is attached @ location: 0x4D7000
+Would you like to run in debug mode? <0, 1>: 0
 Enter a # for arr[0]: 5
 Enter a # for arr[1]: 6
 Enter a # for arr[2]: 8
@@ -23,6 +24,7 @@ Program ended with exit code: 0
 ```
 ```
 The shared mem is attached @ location: 0x4D7000
+Would you like to run in debug mode? <0, 1>: 0
 Enter a # for arr[0]: 10
 Enter a # for arr[1]: 9
 Enter a # for arr[2]: 11
