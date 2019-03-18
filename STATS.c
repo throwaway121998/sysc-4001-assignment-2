@@ -41,7 +41,6 @@ int main(int argc, const char * argv[]) {
         exit(EXIT_FAILURE);
     }
     printf("The shared mem is attached @ location: 0x%X\n", (int)shared_memory);
-    
     shared_data = (struct shared_data *)shared_memory;
     for(int i = 0; i < SZ; i++) {
         /* Instantiate the array from user input. */
