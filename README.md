@@ -39,7 +39,7 @@ Program ended with exit code: 0
 
 ## Discussion
 
-Our solution uses SZ processes and semaphores, where SZ is the number of elements in the array, B. Processes [0, ..., SZ - 2] are tasked with manipulating the array B at index [i, i + 1], where i is the process number. To avoid deadlocks, our solution uses asymmetry: even number processes await semaphores i then i + 1 whilst odd processes await semaphores i + 1 then i. Finally, process number SZ - 1, is tasked with checking to see if the array is successfully placed in decreasing order. If the array is placed in decreasing order, then process SZ - 1 set's the shared state `is_alive` to false, and all processes break and exit. The pseudocode is as follows:
+Our solution uses SZ - 1 processes and semaphores, where SZ is the number of elements in the array, B. Processes [0, ..., SZ - 1] are tasked with manipulating the array B at index [i, i + 1], where i is the process number. To avoid deadlocks, our solution uses asymmetry: even number processes await semaphores i then i + 1 whilst odd processes await semaphores i + 1 then i. Finally, after SZ - 1 iterations of swapping, all processes break and exit. The pseudocode is as follows:
 
 ### Pseudocode
 
@@ -52,22 +52,19 @@ Set is_alive to true.
 Fork SZ processes.
 If a parent process then break.
 If a child process then: 
-  Loop while is_alive:
-    If process number is SZ - 1 then:
-      If the array is in decreasing order then set is_alive to false.
-    If process number is [0, ..., SZ - 2] then:
-      If i is even then:
-        Await semaphore i.
-        Await semaphore i + 1.
-        If B[i] < B[i + 1] then swap B[i] and B[i + 1].
-        Signal semaphore i.
-        Signal semaphore i + 1.
-      If i is odd then:
-        Await semaphore i + 1.
-        Await semaphore i.
-        If B[i] < B[i + 1] then swap B[i] and B[i + 1].
-        Signal semaphore i + 1.
-        Signal semaphore i.
+  Loop SZ - 1 iterations:
+    If i is even then:
+      Await semaphore i.
+      Await semaphore i + 1.
+      If B[i] < B[i + 1] then swap B[i] and B[i + 1].
+      Signal semaphore i.
+      Signal semaphore i + 1.
+    If i is odd then:
+      Await semaphore i + 1.
+      Await semaphore i.
+      If B[i] < B[i + 1] then swap B[i] and B[i + 1].
+      Signal semaphore i + 1.
+      Signal semaphore i.
   Exit process.
 Await SZ processes to exit.
 Print the reconstructed array.
