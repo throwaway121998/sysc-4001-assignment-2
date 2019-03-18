@@ -17,7 +17,6 @@
 #include <sys/types.h>
 
 #include "STATS.h"
-#include "semun.h"
 
 static int set_semvalue(int sem_id);
 static int semaphore_p(int sem_id);
