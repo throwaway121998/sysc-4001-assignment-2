@@ -71,7 +71,6 @@ Print the min value.
 Print the median value.
 Print the max value.
 Detach and delete the shared memory.
-         
 ```
 
 ## Contributors
