@@ -76,8 +76,6 @@ Detach and delete the shared memory.
          
 ```
 
-
-
 ## Contributors
 
 * Kyle Horne 101038042
