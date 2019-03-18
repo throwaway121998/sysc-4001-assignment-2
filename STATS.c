@@ -53,8 +53,9 @@ int main(int argc, const char * argv[]) {
             exit(EXIT_FAILURE);
         }
     }
-    /* Fork SZ - 1 processes. */
-    int n_processes = SZ - 1;
+    shared_data->is_alive = 1;
+    /* Fork SZ processes. */
+    int n_processes = SZ;
     for(int i = 0; i < n_processes; i++) {
         pid_t pid = fork();
         switch(pid) {
@@ -63,9 +64,19 @@ int main(int argc, const char * argv[]) {
                 exit(EXIT_FAILURE);
             case 0:
                 /* Child process. */
-                for(int i = 0; i < SZ - 1; i++) {
-                    /* Asymmetric solution. */
-                    if (i % 2 == 0) {
+                while(shared_data->is_alive) {
+                    if (i == SZ - 1) {
+                        int is_ok = 1;
+                        for(int j = 0; j < SZ; j++) {
+                            if (shared_data->B[i] < shared_data->B[i + 1]) {
+                                is_ok = 0;
+                                break;
+                            }
+                        }
+                        if (is_ok) {
+                            shared_data->is_alive = 0;
+                        }
+                    } else if (i % 2 == 0) { /* Asymmetric solution. */
                         /* Enter the critical section. */
                         if (!semaphore_p(shared_data->mutex[i])) {
                             exit(EXIT_FAILURE);
