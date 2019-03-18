@@ -6,7 +6,7 @@ This repository contains our solution to assignment 2.
 
 Run the following:
 ```
-git clone https://github.com/throwaway121998/sysc-4001-assignment-2/
+git clone https://github.com/throwaway121998/sysc-4001-assignment-2.git
 cd sysc-4001-assignment-2
 make && ./STATS 
 ```
