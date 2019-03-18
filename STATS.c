@@ -70,7 +70,7 @@ int main(int argc, const char * argv[]) {
                 exit(EXIT_FAILURE);
             case 0:
                 /* Child process. */
-                for(int i = 0; i < SZ; i++) {
+                for(int i = 0; i < SZ - 1; i++) {
                     if (i % 2 == 0) { /* Asymmetric solution. */
                         /* Enter the critical section. */
                         if (!semaphore_p(shared_data->mutex[i])) {
