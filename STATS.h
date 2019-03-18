@@ -16,6 +16,7 @@
 struct shared_data {
     int mutex[SZ];
     int     B[SZ];
+    int  is_alive;
 };
 
 #include <sys/types.h>
