@@ -4,7 +4,12 @@ This repository contains our solution to assignment 2.
 
 ## Usage
 
-Run the Makefile.
+Run the following:
+```
+git clone https://github.com/throwaway121998/sysc-4001-assignment-2/
+cd sysc-4001-assignment-2
+make && ./STATS 
+```
 
 ## Tests
 Sample output from the mandatory test cases:
